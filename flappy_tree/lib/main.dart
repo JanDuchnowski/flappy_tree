@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -16,6 +17,10 @@ Color randomColor() {
   return Color(0xFFFFFFFF & Random().nextInt(0xFFFFFFFF));
 }
 
+double treePosition() {
+  return Random().nextDouble() * 10;
+}
+
 class AnimatedContainerDemo extends StatefulWidget {
   const AnimatedContainerDemo({Key? key}) : super(key: key);
 
@@ -27,6 +32,8 @@ class _AnimatedContainerDemoState extends State<AnimatedContainerDemo> {
   late Color color;
   late double borderRadius;
   late double margin;
+  late double position;
+  bool up = false;
 
   @override
   initState() {
@@ -34,6 +41,7 @@ class _AnimatedContainerDemoState extends State<AnimatedContainerDemo> {
     color = randomColor();
     borderRadius = randomBorderRadius();
     margin = randomMargin();
+    position = treePosition();
   }
 
   void change() {
@@ -41,6 +49,7 @@ class _AnimatedContainerDemoState extends State<AnimatedContainerDemo> {
       color = randomColor();
       borderRadius = randomBorderRadius();
       margin = randomMargin();
+      position = treePosition();
     });
   }
 
@@ -50,16 +59,36 @@ class _AnimatedContainerDemoState extends State<AnimatedContainerDemo> {
       body: Center(
         child: Column(
           children: <Widget>[
+            const SizedBox(
+              height: 100,
+            ),
             SizedBox(
-              width: 128,
-              height: 128,
+              width: 88,
+              height: 88,
               child: AnimatedContainer(
-                margin: EdgeInsets.all(margin),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(borderRadius),
+                onEnd: () {
+                  setState(() {
+                    up = false;
+                  });
+                },
+                padding: EdgeInsets.all(10.0),
+                duration: Duration(milliseconds: 250), // Animation speed
+                transform: Transform.translate(
+                  offset: Offset(
+                      0, up == true ? -100 : 0), // Change -100 for the y offset
+                ).transform,
+                child: Container(
+                  height: 50.0,
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.red,
+                    child: const Icon(Icons.ac_unit),
+                    onPressed: () {
+                      setState(() {
+                        up = !up;
+                      });
+                    },
+                  ),
                 ),
-                duration: _duration,
               ),
             ),
             ElevatedButton(

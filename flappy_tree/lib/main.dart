@@ -1,121 +1,49 @@
-import 'dart:ffi';
-import 'dart:math';
+import 'dart:async';
 
+import 'package:flame/collisions.dart';
+import 'package:flame/components.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flame/input.dart';
+import 'package:moonlander/barrier.dart';
+import 'package:moonlander/tree.dart';
 
-const _duration = Duration(milliseconds: 400);
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-double randomBorderRadius() {
-  return Random().nextDouble() * 64;
+  final game = TreeGame();
+
+  runApp(GameWidget(game: game));
 }
 
-double randomMargin() {
-  return Random().nextDouble() * 64;
-}
-
-Color randomColor() {
-  return Color(0xFFFFFFFF & Random().nextInt(0xFFFFFFFF));
-}
-
-double treePosition() {
-  return Random().nextDouble() * 10;
-}
-
-class AnimatedContainerDemo extends StatefulWidget {
-  const AnimatedContainerDemo({Key? key}) : super(key: key);
-
+/// This class encapulates the whole game.
+class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
+  late Tree tree;
+  late Barrier topBarrier;
+  late Barrier bottomBarrier;
   @override
-  State<AnimatedContainerDemo> createState() => _AnimatedContainerDemoState();
-}
-
-class _AnimatedContainerDemoState extends State<AnimatedContainerDemo> {
-  late Color color;
-  late double borderRadius;
-  late double margin;
-  late double position;
-  bool up = false;
-
-  @override
-  initState() {
-    super.initState();
-    color = randomColor();
-    borderRadius = randomBorderRadius();
-    margin = randomMargin();
-    position = treePosition();
-  }
-
-  void change() {
-    setState(() {
-      color = randomColor();
-      borderRadius = randomBorderRadius();
-      margin = randomMargin();
-      position = treePosition();
-    });
+  Future<void> onLoad() async {
+    tree = Tree()
+      ..position = size / 2
+      ..width = 50
+      ..height = 100
+      ..anchor = Anchor.center;
+    add(tree);
+    topBarrier = Barrier(Vector2(size.x - 100, 100));
+    bottomBarrier = Barrier(Vector2(size.x - 100, size.y - 100));
+    add(topBarrier);
+    add(bottomBarrier);
+    return null;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 100,
-            ),
-            SizedBox(
-              width: 88,
-              height: 88,
-              child: AnimatedContainer(
-                onEnd: () {
-                  setState(() {
-                    up = false;
-                  });
-                },
-                padding: EdgeInsets.all(10.0),
-                duration: Duration(milliseconds: 250), // Animation speed
-                transform: Transform.translate(
-                  offset: Offset(
-                      0, up == true ? -100 : 0), // Change -100 for the y offset
-                ).transform,
-                child: Container(
-                  height: 50.0,
-                  child: FloatingActionButton(
-                    backgroundColor: Colors.red,
-                    child: const Icon(Icons.ac_unit),
-                    onPressed: () {
-                      setState(() {
-                        up = !up;
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              child: const Text('change'),
-              onPressed: () => change(),
-            ),
-          ],
-        ),
-      ),
-    );
+  void onTap() {
+    tree.jump(Vector2(0, -20));
   }
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AnimatedContainerDemo(),
-    );
+  void update(dt) {
+    super.update(dt);
+    tree.position = Vector2(tree.position.x + 1, tree.position.y + 1);
   }
-}
-
-void main() {
-  runApp(
-    const MyApp(),
-  );
 }

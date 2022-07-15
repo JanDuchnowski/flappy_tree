@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
@@ -29,8 +30,15 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
       ..height = 100
       ..anchor = Anchor.center;
     add(tree);
-    topBarrier = Barrier(Vector2(size.x - 100, 100));
-    bottomBarrier = Barrier(Vector2(size.x - 100, size.y - 100));
+    double topSize = (Random().nextDouble()) * (size.y / 2);
+    double bottomSize = size.y - topSize - 250;
+    print(topSize);
+    print(bottomSize);
+    topBarrier = Barrier(Vector2(size.x - 100, topSize / 2),
+        Vector2.array([100, topSize]), size);
+
+    bottomBarrier = Barrier(Vector2(size.x - 100, size.y - bottomSize / 2),
+        Vector2.array([100, bottomSize]), size);
     add(topBarrier);
     add(bottomBarrier);
     return null;
@@ -38,12 +46,23 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   @override
   void onTap() {
-    tree.jump(Vector2(0, -20));
+    tree.jump();
   }
 
   @override
   void update(dt) {
     super.update(dt);
-    tree.position = Vector2(tree.position.x + 1, tree.position.y + 1);
+    tree.update(dt);
+    if (topBarrier.position.x < -50) {
+      double topSize = (Random().nextDouble()) * (size.y / 2);
+      double bottomSize = size.y - topSize - 250;
+      topBarrier.size = Vector2.array([
+        100,
+        topSize,
+      ]);
+      bottomBarrier.size = Vector2.array([100, bottomSize]);
+    }
+    topBarrier.update(dt);
+    bottomBarrier.update(dt);
   }
 }

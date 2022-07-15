@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:ffi';
+import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
@@ -10,14 +12,14 @@ import 'package:moonlander/tree.dart';
 
 class Barrier extends PositionComponent
     with HasGameRef<TreeGame>, CollisionCallbacks {
-  //late Vector2 velocity;
   final _defaultColor = Colors.cyan;
+  final Vector2 _viewPortSize;
   late ShapeHitbox hitbox;
 
-  Barrier(Vector2 position)
+  Barrier(Vector2 position, Vector2 size, Vector2 this._viewPortSize)
       : super(
           position: position,
-          size: Vector2.all(100),
+          size: size,
           anchor: Anchor.center,
         );
 
@@ -25,19 +27,21 @@ class Barrier extends PositionComponent
   Future<void> onLoad() async {
     final defaultPaint = Paint()
       ..color = _defaultColor
-      ..style = PaintingStyle.stroke;
+      ..style = PaintingStyle.fill;
     hitbox = RectangleHitbox()
       ..paint = defaultPaint
       ..renderShape = true;
     add(hitbox);
-    final center = gameRef.size / 2;
-    //  velocity = (center - position)..scaleTo(150);
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    // position.add(velocity * dt);
+    if (position.x < -50) {
+      position = Vector2(size.x + 350, position.y);
+    } else {
+      position = Vector2(position.x - 1, position.y);
+    }
   }
 
   @override
@@ -45,7 +49,9 @@ class Barrier extends PositionComponent
     Set<Vector2> intersectionPoints,
     PositionComponent other,
   ) {
+    print("szyc");
     super.onCollisionStart(intersectionPoints, other);
+
     if (other is ScreenHitbox) {
       removeFromParent();
       return;

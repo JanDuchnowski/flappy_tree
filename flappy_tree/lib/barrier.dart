@@ -37,10 +37,12 @@ class Barrier extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (position.x < -50) {
-      position = Vector2(size.x + 350, position.y);
-    } else {
-      position = Vector2(position.x - 1, position.y);
+    if (!wasHit) {
+      if (position.x < -50) {
+        position = Vector2(size.x + 350, position.y);
+      } else {
+        position = Vector2(position.x - 1, position.y);
+      }
     }
   }
 
@@ -49,9 +51,8 @@ class Barrier extends PositionComponent
     Set<Vector2> intersectionPoints,
     PositionComponent other,
   ) {
-    print("szyc");
     super.onCollisionStart(intersectionPoints, other);
-
+    wasHit = true;
     if (other is ScreenHitbox) {
       removeFromParent();
       return;

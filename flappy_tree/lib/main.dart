@@ -7,8 +7,10 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/input.dart';
 import 'package:moonlander/barrier.dart';
+import 'package:moonlander/score.dart';
 import 'package:moonlander/tree.dart';
 
+bool wasHit = false;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -22,6 +24,9 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
   late Tree tree;
   late Barrier topBarrier;
   late Barrier bottomBarrier;
+  late TextComponent scoreText;
+
+  int score = 0;
   @override
   Future<void> onLoad() async {
     tree = Tree()
@@ -41,6 +46,8 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
         Vector2.array([100, bottomSize]), size);
     add(topBarrier);
     add(bottomBarrier);
+    scoreText = TextComponent(text: "0", position: Vector2(size.x / 2, 100));
+    add(scoreText);
     return null;
   }
 
@@ -62,7 +69,14 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
       ]);
       bottomBarrier.size = Vector2.array([100, bottomSize]);
     }
-    topBarrier.update(dt);
-    bottomBarrier.update(dt);
+    double relativePostion = tree.position.x - topBarrier.position.x;
+    if (relativePostion <= 1 && relativePostion >= -1) {
+      score++;
+      scoreText.text = "${score}";
+    }
+    if (!wasHit) {
+      topBarrier.update(dt);
+      bottomBarrier.update(dt);
+    }
   }
 }

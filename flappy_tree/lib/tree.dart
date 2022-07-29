@@ -25,12 +25,16 @@ class Tree extends SpriteComponent
   }
 
   void jump() {
-    position.add(Vector2(0, -30));
+    if (!wasHit) {
+      position.add(Vector2(0, -30));
+    }
   }
 
   @override
   void update(double dt) {
-    position = Vector2(position.x, position.y + 1);
-    super.update(dt);
+    if (!wasHit) {
+      position = Vector2(position.x, position.y + 1);
+      super.update(dt);
+    }
   }
 }

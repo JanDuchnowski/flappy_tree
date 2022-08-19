@@ -51,7 +51,9 @@ Future<void> main() async {
 /// This class encapulates the whole game.
 class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
   late Tree tree;
-
+  late Barrier topBarrier;
+  late Barrier bottomBarrier;
+  late TextComponent scoreText;
   late HomeView homeView;
   bool gameStarted = false;
 
@@ -65,19 +67,19 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
       ..anchor = Anchor.center;
     add(tree);
 
-    // double topSize = (Random().nextDouble()) * (size.y / 2);
-    // double bottomSize = size.y - topSize - 250;
-    // print(topSize);
-    // print(bottomSize);
-    // topBarrier = Barrier(
-    //     Vector2(size.x - 50, topSize / 2), Vector2.array([100, topSize]), size);
+    double topSize = (Random().nextDouble()) * (size.y / 2);
+    double bottomSize = size.y - topSize - 250;
+    print(topSize);
+    print(bottomSize);
+    topBarrier = Barrier(
+        Vector2(size.x - 50, topSize / 2), Vector2.array([100, topSize]), size);
 
-    // bottomBarrier = Barrier(Vector2(size.x - 50, size.y - bottomSize / 2),
-    //     Vector2.array([100, bottomSize]), size);
-    // add(topBarrier);
-    // add(bottomBarrier);
-    // scoreText = TextComponent(text: "0", position: Vector2(size.x / 2, 100));
-    // add(scoreText);
+    bottomBarrier = Barrier(Vector2(size.x - 50, size.y - bottomSize / 2),
+        Vector2.array([100, bottomSize]), size);
+    add(topBarrier);
+    add(bottomBarrier);
+    scoreText = TextComponent(text: "0", position: Vector2(size.x / 2, 100));
+    add(scoreText);
     homeView = HomeView();
     add(homeView);
     return null;

@@ -32,7 +32,7 @@ class Tree extends SpriteComponent
 
   @override
   void update(double dt) {
-    if (!wasHit) {
+    if (!wasHit && gameRef.gameStarted) {
       position = Vector2(position.x, position.y + 1);
       super.update(dt);
     }

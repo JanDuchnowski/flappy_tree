@@ -37,7 +37,7 @@ class Barrier extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (!wasHit) {
+    if (!wasHit && gameRef.gameStarted) {
       if (position.x < -50) {
         position = Vector2(size.x + 350, position.y);
       } else {

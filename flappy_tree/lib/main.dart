@@ -10,6 +10,7 @@ import 'package:flame/input.dart';
 import 'package:moonlander/barrier.dart';
 import 'package:moonlander/score.dart';
 import 'package:moonlander/tree.dart';
+import 'package:moonlander/views/death_screen.dart';
 import 'package:moonlander/views/home.dart';
 
 bool wasHit = false;
@@ -94,29 +95,30 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
     tree.jump();
   }
 
-  //@override
-  //void update(dt) {
-  // if (gameStarted) {
-  //   super.update(dt);
-  //   tree.update(dt);
-  //   if (topBarrier.position.x < -50) {
-  //     double topSize = (Random().nextDouble()) * (size.y / 2);
-  //     double bottomSize = size.y - topSize - 250;
-  //     topBarrier.size = Vector2.array([
-  //       100,
-  //       topSize,
-  //     ]);
-  //     bottomBarrier.size = Vector2.array([100, bottomSize]);
-  //   }
-  //   double relativePostion = tree.position.x - topBarrier.position.x;
-  //   if (relativePostion <= 1 && relativePostion >= -1) {
-  //     score++;
-  //     scoreText.text = "${score}";
-  //   }
-  //   if (!wasHit) {
-  //     topBarrier.update(dt);
-  //     bottomBarrier.update(dt);
-  //   }
-  // }
-  // }
+  @override
+  void update(dt) {
+    super.update(dt);
+    if (gameStarted) {
+      if (topBarrier.position.x < -50) {
+        double topSize = (Random().nextDouble()) * (size.y / 2);
+        double bottomSize = size.y - topSize - 250;
+        topBarrier.size = Vector2.array([
+          100,
+          topSize,
+        ]);
+        bottomBarrier.size = Vector2.array([100, bottomSize]);
+      }
+      double relativePostion = tree.position.x - topBarrier.position.x;
+      if (relativePostion <= 1 && relativePostion >= -1) {
+        score++;
+        scoreText.text = "${score}";
+      }
+      topBarrier.update(dt);
+      bottomBarrier.update(dt);
+      if (wasHit) {
+        add(DeathView());
+        gameStarted = false;
+      }
+    }
+  }
 }

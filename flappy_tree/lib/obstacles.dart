@@ -5,14 +5,14 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:moonlander/barrier.dart';
 import 'package:moonlander/main.dart';
-
-import 'views/death_screen.dart';
+import 'package:moonlander/redux/game_state.dart';
 
 class Obstacles extends PositionComponent
     with HasGameRef<TreeGame>, CollisionCallbacks {
   late Barrier topBarrier;
   late Barrier bottomBarrier;
-  bool isGameActive = false;
+  late double topSize;
+  late double bottomSize;
 
   Obstacles()
       : super(
@@ -34,7 +34,7 @@ class Obstacles extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (gameRef.gameStarted) {
+    if (GameState().hasGameStarted) {
       if (topBarrier.position.x < -50) {
         double topSize = (Random().nextDouble()) * (size.y / 2);
         double bottomSize = size.y - topSize - 250;
@@ -54,24 +54,26 @@ class Obstacles extends PositionComponent
     }
   }
 
+  void setBarrierSize() {
+    topSize = (Random().nextDouble()) * (gameRef.size.y / 2);
+    bottomSize = gameRef.size.y - topSize - 250;
+  }
+
   void setInitialBarrierPosition() {
-    double topSize = (Random().nextDouble()) * (gameRef.size.y / 2);
-    double bottomSize = gameRef.size.y - topSize - 250;
+    setBarrierSize();
     topBarrier = Barrier(Vector2(gameRef.size.x - 50, topSize / 2),
-        Vector2.array([100, topSize]), isGameActive);
+        Vector2.array([100, topSize]));
     bottomBarrier = Barrier(
         Vector2(gameRef.size.x - 50, gameRef.size.y - bottomSize / 2),
-        Vector2.array([100, bottomSize]),
-        isGameActive);
+        Vector2.array([100, bottomSize]));
   }
 
   void restartBarrierPosition() {
-    gameRef.score = 0;
-    gameRef.scoreText.text = "${gameRef.score}";
-    double topSize = (Random().nextDouble()) * (gameRef.size.y / 2);
-    double bottomSize = gameRef.size.y - topSize - 250;
+    setBarrierSize();
     topBarrier.position = Vector2(gameRef.size.x - 50, topSize / 2);
+    topBarrier.size = Vector2.array([100, topSize]);
     bottomBarrier.position =
         Vector2(gameRef.size.x - 50, gameRef.size.y - bottomSize / 2);
+    bottomBarrier.size = Vector2.array([100, bottomSize]);
   }
 }

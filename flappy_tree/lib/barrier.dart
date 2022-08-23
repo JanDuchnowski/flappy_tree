@@ -9,20 +9,14 @@ import 'package:moonlander/redux/game_state.dart';
 class Barrier extends PositionComponent
     with HasGameRef<TreeGame>, CollisionCallbacks {
   final _defaultColor = Colors.cyan;
-
-  bool isGameActive;
   late ShapeHitbox hitbox;
 
-  Barrier(Vector2 position, Vector2 size, this.isGameActive)
+  Barrier(Vector2 position, Vector2 size)
       : super(
           position: position,
           size: size,
           anchor: Anchor.center,
         );
-
-  void activateGame() {
-    isGameActive = true;
-  }
 
   @override
   Future<void> onLoad() async {
@@ -38,7 +32,7 @@ class Barrier extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (!GameState().wasHit && isGameActive) {
+    if (!GameState().wasHit && GameState().hasGameStarted) {
       if (position.x < -50) {
         position = Vector2(size.x + 350, position.y);
       } else {
@@ -54,9 +48,5 @@ class Barrier extends PositionComponent
   ) {
     super.onCollisionStart(intersectionPoints, other);
     GameState().wasHit = true;
-    if (other is ScreenHitbox) {
-      //removeFromParent();
-      return;
-    }
   }
 }

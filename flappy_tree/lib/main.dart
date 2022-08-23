@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'dart:math';
 
-import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/input.dart';
-import 'package:moonlander/barrier.dart';
+
 import 'package:moonlander/obstacles.dart';
 import 'package:moonlander/redux/game_state.dart';
-import 'package:moonlander/score.dart';
 import 'package:moonlander/tree.dart';
 import 'package:moonlander/views/death_screen.dart';
 import 'package:moonlander/views/home.dart';
@@ -38,15 +35,15 @@ Future<void> main() async {
 }
 
 class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
+  final DeathView deathView = DeathView();
   late Tree tree;
   late TextComponent scoreText;
   late HomeView homeView;
-  final DeathView deathView = DeathView();
   late Obstacles obstacles;
-  bool gameStarted = false;
-  bool deathScreenAdded = false;
 
+  bool deathScreenAdded = false;
   int score = 0;
+
   @override
   Future<void> onLoad() async {
     tree = Tree()
@@ -66,27 +63,11 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   @override
   void onTap() {
-    if (!gameStarted) {
-      gameStarted = true;
-      obstacles.isGameActive = true;
-      obstacles.topBarrier.isGameActive = true;
-      obstacles.bottomBarrier.isGameActive = true;
-      remove(homeView);
+    if (!GameState().hasGameStarted) {
+      _startGame();
     }
-
     if (GameState().wasHit) {
-      gameStarted = true;
-      if (deathView.isMounted == true) {
-        GameState().wasHit = false;
-        remove(deathView);
-      }
-      tree.position = size / 2;
-      //remove(obstacles);
-      deathScreenAdded = false;
-      //add(obstacles);
-      obstacles.restartBarrierPosition();
-      GameState().wasHit = false;
-      score = 0;
+      _restartGame();
     }
     tree.jump();
   }
@@ -98,5 +79,26 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
       deathScreenAdded = true;
     }
     super.update(dt);
+  }
+
+  void _startGame() {
+    GameState().hasGameStarted = true;
+    remove(homeView);
+  }
+
+  void _resetScore() {
+    score = 0;
+    scoreText.text = "${score}";
+  }
+
+  void _restartGame() {
+    _resetScore();
+    GameState().wasHit = false;
+    if (deathView.isMounted == true) {
+      remove(deathView);
+      deathScreenAdded = false;
+    }
+    tree.position = size / 2;
+    obstacles.restartBarrierPosition();
   }
 }

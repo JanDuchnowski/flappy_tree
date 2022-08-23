@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:moonlander/main.dart';
+import 'package:moonlander/redux/game_state.dart';
 
 enum TreeState {
   down,
@@ -25,15 +26,15 @@ class Tree extends SpriteComponent
   }
 
   void jump() {
-    if (!wasHit) {
+    if (!GameState().wasHit) {
       position.add(Vector2(0, -30));
     }
   }
 
   @override
   void update(double dt) {
-    if (!wasHit && gameRef.gameStarted) {
-      position = Vector2(position.x, position.y + 1);
+    if (!GameState().wasHit && gameRef.gameStarted) {
+      position = Vector2(position.x, position.y + 1.35);
       super.update(dt);
     }
   }

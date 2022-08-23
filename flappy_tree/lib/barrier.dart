@@ -1,27 +1,28 @@
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flame/input.dart';
 import 'package:moonlander/main.dart';
-import 'package:moonlander/tree.dart';
+import 'package:moonlander/redux/game_state.dart';
 
 class Barrier extends PositionComponent
     with HasGameRef<TreeGame>, CollisionCallbacks {
   final _defaultColor = Colors.cyan;
-  final Vector2 _viewPortSize;
+
+  bool isGameActive;
   late ShapeHitbox hitbox;
 
-  Barrier(Vector2 position, Vector2 size, Vector2 this._viewPortSize)
+  Barrier(Vector2 position, Vector2 size, this.isGameActive)
       : super(
           position: position,
           size: size,
           anchor: Anchor.center,
         );
+
+  void activateGame() {
+    isGameActive = true;
+  }
 
   @override
   Future<void> onLoad() async {
@@ -37,7 +38,7 @@ class Barrier extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (!wasHit && gameRef.gameStarted) {
+    if (!GameState().wasHit && isGameActive) {
       if (position.x < -50) {
         position = Vector2(size.x + 350, position.y);
       } else {
@@ -52,9 +53,9 @@ class Barrier extends PositionComponent
     PositionComponent other,
   ) {
     super.onCollisionStart(intersectionPoints, other);
-    wasHit = true;
+    GameState().wasHit = true;
     if (other is ScreenHitbox) {
-      removeFromParent();
+      //removeFromParent();
       return;
     }
   }

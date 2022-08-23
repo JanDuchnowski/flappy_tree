@@ -1,13 +1,5 @@
-import 'dart:io';
-import 'dart:math';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-import 'package:flame/assets.dart';
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
-import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
-import 'package:moonlander/barrier.dart';
 import 'package:moonlander/main.dart';
 
 class HomeView extends SpriteComponent with HasGameRef<TreeGame> {

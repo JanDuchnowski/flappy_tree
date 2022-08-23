@@ -8,12 +8,13 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/input.dart';
 import 'package:moonlander/barrier.dart';
+import 'package:moonlander/obstacles.dart';
+import 'package:moonlander/redux/game_state.dart';
 import 'package:moonlander/score.dart';
 import 'package:moonlander/tree.dart';
 import 'package:moonlander/views/death_screen.dart';
 import 'package:moonlander/views/home.dart';
 
-bool wasHit = false;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -33,30 +34,17 @@ Future<void> main() async {
     'ui/start-button.png',
   ]);
 
-  final game = TreeGame();
-
   runApp(GameWidget(game: TreeGame()));
 }
 
-// class StartingPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(home: Scaffold(
-//       body:
-//       InkWell(child: Container(width: 50, ),
-//       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Tree)))),
-//     ));
-//   }
-// }
-
-/// This class encapulates the whole game.
 class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
   late Tree tree;
-  late Barrier topBarrier;
-  late Barrier bottomBarrier;
   late TextComponent scoreText;
   late HomeView homeView;
+  final DeathView deathView = DeathView();
+  late Obstacles obstacles;
   bool gameStarted = false;
+  bool deathScreenAdded = false;
 
   int score = 0;
   @override
@@ -67,18 +55,8 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
       ..height = 100
       ..anchor = Anchor.center;
     add(tree);
-
-    double topSize = (Random().nextDouble()) * (size.y / 2);
-    double bottomSize = size.y - topSize - 250;
-    print(topSize);
-    print(bottomSize);
-    topBarrier = Barrier(
-        Vector2(size.x - 50, topSize / 2), Vector2.array([100, topSize]), size);
-
-    bottomBarrier = Barrier(Vector2(size.x - 50, size.y - bottomSize / 2),
-        Vector2.array([100, bottomSize]), size);
-    add(topBarrier);
-    add(bottomBarrier);
+    obstacles = Obstacles();
+    add(obstacles);
     scoreText = TextComponent(text: "0", position: Vector2(size.x / 2, 100));
     add(scoreText);
     homeView = HomeView();
@@ -90,35 +68,35 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
   void onTap() {
     if (!gameStarted) {
       gameStarted = true;
+      obstacles.isGameActive = true;
+      obstacles.topBarrier.isGameActive = true;
+      obstacles.bottomBarrier.isGameActive = true;
       remove(homeView);
+    }
+
+    if (GameState().wasHit) {
+      gameStarted = true;
+      if (deathView.isMounted == true) {
+        GameState().wasHit = false;
+        remove(deathView);
+      }
+      tree.position = size / 2;
+      //remove(obstacles);
+      deathScreenAdded = false;
+      //add(obstacles);
+      obstacles.restartBarrierPosition();
+      GameState().wasHit = false;
+      score = 0;
     }
     tree.jump();
   }
 
   @override
-  void update(dt) {
-    super.update(dt);
-    if (gameStarted) {
-      if (topBarrier.position.x < -50) {
-        double topSize = (Random().nextDouble()) * (size.y / 2);
-        double bottomSize = size.y - topSize - 250;
-        topBarrier.size = Vector2.array([
-          100,
-          topSize,
-        ]);
-        bottomBarrier.size = Vector2.array([100, bottomSize]);
-      }
-      double relativePostion = tree.position.x - topBarrier.position.x;
-      if (relativePostion <= 1 && relativePostion >= -1) {
-        score++;
-        scoreText.text = "${score}";
-      }
-      topBarrier.update(dt);
-      bottomBarrier.update(dt);
-      if (wasHit) {
-        add(DeathView());
-        gameStarted = false;
-      }
+  void update(double dt) {
+    if (GameState().wasHit && !deathScreenAdded) {
+      add(deathView);
+      deathScreenAdded = true;
     }
+    super.update(dt);
   }
 }

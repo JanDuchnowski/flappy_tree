@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:moonlander/main.dart';
 import 'package:moonlander/redux/game_state.dart';
 
@@ -26,6 +27,7 @@ class Tree extends SpriteComponent
   }
 
   void jump() {
+    FlameAudio.play('tree_jump.wav', volume: 1);
     if (!GameState().wasHit) {
       position.add(Vector2(0, -30));
     }

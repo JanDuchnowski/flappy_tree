@@ -6,7 +6,6 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
-
 import 'package:moonlander/obstacles.dart';
 import 'package:moonlander/redux/game_state.dart';
 import 'package:moonlander/tree.dart';
@@ -31,7 +30,7 @@ Future<void> main() async {
     'ui/icon-sound-enabled.png',
     'ui/start-button.png',
   ]);
-  await FlameAudio.audioCache.loadAll(['tree_jump.wav', 'start-menu.wav']);
+
   runApp(GameWidget(game: TreeGame()));
 }
 
@@ -47,6 +46,7 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   @override
   Future<void> onLoad() async {
+    await FlameAudio.audioCache.loadAll(['tree_jump.wav', 'start-menu.wav']);
     tree = Tree()
       ..position = size / 2
       ..width = 50
@@ -59,6 +59,7 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
     add(scoreText);
     homeView = HomeView();
     add(homeView);
+
     return null;
   }
 
@@ -66,7 +67,7 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
   void onTap() {
     if (!GameState().hasGameStarted) {
       _startGame();
-      FlameAudio.loop('start-menu.wav');
+      FlameAudio.bgm.dispose();
     }
     if (GameState().wasHit) {
       _restartGame();

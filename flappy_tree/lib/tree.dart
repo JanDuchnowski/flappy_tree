@@ -19,7 +19,7 @@ class Tree extends SpriteComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
+    await FlameAudio.audioCache.loadAll(['tree_jump.wav', 'start-menu.wav']);
     hitbox = RectangleHitbox()..renderShape = false;
 
     add(hitbox);
@@ -27,8 +27,8 @@ class Tree extends SpriteComponent
   }
 
   void jump() {
-    FlameAudio.play('tree_jump.wav', volume: 1);
     if (!GameState().wasHit) {
+      FlameAudio.play('tree_jump.wav');
       position.add(Vector2(0, -30));
     }
   }

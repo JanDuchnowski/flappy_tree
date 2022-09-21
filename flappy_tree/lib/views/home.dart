@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:moonlander/main.dart';
 
@@ -12,6 +13,8 @@ class HomeView extends SpriteComponent with HasGameRef<TreeGame> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    FlameAudio.bgm.initialize();
+    await FlameAudio.bgm.play('start-menu.wav');
     sprite = await gameRef.loadSprite('bg/backyard.png');
   }
 

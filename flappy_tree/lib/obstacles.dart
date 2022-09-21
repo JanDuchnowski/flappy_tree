@@ -35,9 +35,8 @@ class Obstacles extends PositionComponent
   void update(double dt) {
     super.update(dt);
     if (GameState().hasGameStarted) {
-      if (topBarrier.position.x < -50) {
-        double topSize = (Random().nextDouble()) * (size.y / 2);
-        double bottomSize = size.y - topSize - 250;
+      if (topBarrier.position.x < -47) {
+        setBarrierSize();
         topBarrier.size = Vector2.array([
           100,
           topSize,
@@ -55,8 +54,9 @@ class Obstacles extends PositionComponent
   }
 
   void setBarrierSize() {
-    topSize = (Random().nextDouble()) * (gameRef.size.y / 2);
+    topSize = (Random().nextDouble()) * (gameRef.size.y / 2) - 100;
     bottomSize = gameRef.size.y - topSize - 250;
+    print("topSize ${topSize}");
   }
 
   void setInitialBarrierPosition() {

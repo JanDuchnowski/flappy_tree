@@ -47,7 +47,7 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   @override
   Future<void> onLoad() async {
-    await FlameAudio.audioCache.loadAll(['tree_jump.wav', 'start-menu.wav']);
+    GameState().init();
     tree = Tree()
       ..position = size / 2
       ..width = 50
@@ -64,9 +64,10 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   @override
   void onTap() {
+    GameState().playSfx('tree_jump.wav');
     if (!GameState().hasGameStarted) {
       _startGame();
-      FlameAudio.bgm.pause();
+      FlameAudio.bgm.stop();
     }
     if (GameState().wasHit) {
       _restartGame();

@@ -13,8 +13,7 @@ class HomeView extends SpriteComponent with HasGameRef<TreeGame> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    FlameAudio.bgm.initialize();
-    await FlameAudio.bgm.play('start-menu.wav');
+    FlameAudio.bgm.play('start-menu.wav');
     sprite = await gameRef.loadSprite('bg/backyard.png');
   }
 

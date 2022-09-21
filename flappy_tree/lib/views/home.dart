@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
-import 'package:moonlander/main.dart';
+import 'package:flutter_application_1/main.dart';
 
 class HomeView extends SpriteComponent with HasGameRef<TreeGame> {
   late Rect titleRect;

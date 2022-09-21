@@ -3,9 +3,9 @@ import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:moonlander/barrier.dart';
-import 'package:moonlander/main.dart';
-import 'package:moonlander/redux/game_state.dart';
+import 'package:flutter_application_1/barrier.dart';
+import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/redux/game_state.dart';
 
 class Obstacles extends PositionComponent
     with HasGameRef<TreeGame>, CollisionCallbacks {

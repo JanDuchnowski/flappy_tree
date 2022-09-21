@@ -6,11 +6,12 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:moonlander/obstacles.dart';
-import 'package:moonlander/redux/game_state.dart';
-import 'package:moonlander/tree.dart';
-import 'package:moonlander/views/death_screen.dart';
-import 'package:moonlander/views/home.dart';
+import 'package:flutter_application_1/tree.dart';
+import 'package:flutter_application_1/views/death_screen.dart';
+import 'package:flutter_application_1/views/home.dart';
+import 'package:flutter_application_1/redux/game_state.dart';
+
+import 'obstacles.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,15 +60,13 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
     add(scoreText);
     homeView = HomeView();
     add(homeView);
-
-    return null;
   }
 
   @override
   void onTap() {
     if (!GameState().hasGameStarted) {
       _startGame();
-      FlameAudio.bgm.dispose();
+      FlameAudio.bgm.pause();
     }
     if (GameState().wasHit) {
       _restartGame();

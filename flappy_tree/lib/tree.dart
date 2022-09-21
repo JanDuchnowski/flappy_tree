@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:moonlander/main.dart';
-import 'package:moonlander/redux/game_state.dart';
+import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/redux/game_state.dart';
 
 enum TreeState {
   down,
@@ -19,7 +19,6 @@ class Tree extends SpriteComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    await FlameAudio.audioCache.loadAll(['tree_jump.wav', 'start-menu.wav']);
     hitbox = RectangleHitbox()..renderShape = false;
 
     add(hitbox);

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/game.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/redux/game_state.dart';
 

@@ -38,6 +38,7 @@ dependencies:
   flame: ^1.3.0
   flame_audio: ^1.3.0
   audioplayers: ^1.0.1
+  soundpool: ^2.3.0
 
 
 dev_dependencies:
@@ -79,8 +80,9 @@ flutter:
     - assets/images/ui/icon-help.png
     - assets/images/ui/start-button.png
     - assets/audio/
-    - assets/audio/tree_jump.wav
+    - assets/audio/tree-jump.wav
     - assets/audio/start-menu.wav
+    - assets/audio/music-beginning.wav
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

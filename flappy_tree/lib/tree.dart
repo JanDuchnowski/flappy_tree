@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/game.dart';
 import 'package:flutter_application_1/redux/game_state.dart';
+import 'package:flutter_application_1/sounds.dart';
 
 enum TreeState {
   down,
@@ -18,7 +19,6 @@ class Tree extends SpriteComponent
   late List szyc;
   @override
   Future<void> onLoad() async {
-    await FlameAudio.audioCache.loadAll(['tree_jump.wav', 'start-menu.wav']);
     await super.onLoad();
     hitbox = RectangleHitbox()..renderShape = false;
 
@@ -28,8 +28,7 @@ class Tree extends SpriteComponent
 
   void jump() {
     if (!GameState().wasHit) {
-      GameState().playSfx('tree_jump.wav');
-
+      Sounds.jumpSound();
       position.add(Vector2(0, -30));
     }
   }
@@ -37,7 +36,7 @@ class Tree extends SpriteComponent
   @override
   void update(double dt) {
     if (!GameState().wasHit && GameState().hasGameStarted) {
-      position = Vector2(position.x, position.y + 1.25);
+      position = Vector2(position.x, position.y + 1.0);
       super.update(dt);
     }
   }

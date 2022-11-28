@@ -69,5 +69,9 @@ class Obstacles extends PositionComponent
   void _setBarrierPosition() {
     topBarrierPosition = (Random().nextDouble()) * 250;
     bottomBarrierPosition = topBarrierPosition + 700;
+    if (bottomBarrierPosition > gameRef.size.y) {
+      topBarrierPosition -= 100;
+      bottomBarrierPosition -= 100;
+    }
   }
 }

@@ -22,10 +22,9 @@ class Barrier extends SpriteComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    sprite = await gameRef.loadSprite('pipe-green.png');
     hitbox = RectangleHitbox()..renderShape = false;
     add(hitbox);
-
-    sprite = await gameRef.loadSprite('pipe-green.png');
   }
 
   @override

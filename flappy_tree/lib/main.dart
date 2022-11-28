@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flame/flame.dart';
-import 'package:flame_audio/flame_audio.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/sounds.dart';
@@ -14,6 +13,8 @@ Future<void> main() async {
   await Flame.images.loadAll(<String>[
     'bg/backyard.png',
     'bg/lose-splash.png',
+    'mecha-biom-barrier.png',
+    'mecha-biom-barrier2.png'
   ]);
   Sounds.initialize();
   runApp(Menu());

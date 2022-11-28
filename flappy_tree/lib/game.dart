@@ -4,9 +4,10 @@ import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/obstacles.dart';
+import 'package:flutter_application_1/obstacles/obstacles.dart';
 import 'package:flutter_application_1/sounds.dart';
 import 'package:flutter_application_1/tree.dart';
+import 'package:flutter_application_1/views/bg_image.dart';
 import 'package:flutter_application_1/views/death_screen.dart';
 import 'package:flutter_application_1/views/menu.dart';
 
@@ -44,6 +45,7 @@ class MyGame extends StatelessWidget {
 
 class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
   final DeathView deathView = DeathView();
+  final BackgroundImage backgroundImage = BackgroundImage();
   late Tree tree;
   late TextComponent scoreText;
   late Menu menu;
@@ -54,6 +56,7 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   @override
   Future<void> onLoad() async {
+    add(backgroundImage);
     tree = Tree()
       ..position = size / 2
       ..width = 50

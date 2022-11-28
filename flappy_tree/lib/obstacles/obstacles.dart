@@ -3,9 +3,9 @@ import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter_application_1/barrier.dart';
+import 'package:flutter_application_1/obstacles/barrier.dart';
 import 'package:flutter_application_1/game.dart';
-import 'package:flutter_application_1/main.dart';
+
 import 'package:flutter_application_1/redux/game_state.dart';
 
 class Obstacles extends PositionComponent
@@ -18,6 +18,7 @@ class Obstacles extends PositionComponent
   Obstacles()
       : super(
           anchor: Anchor.center,
+          //scale: Vector2(1.5, 1.5),
         );
 
   @override
@@ -55,17 +56,17 @@ class Obstacles extends PositionComponent
   }
 
   void setBarrierSize() {
-    topSize = (Random().nextDouble()) * (gameRef.size.y / 2) - 100;
-    bottomSize = gameRef.size.y - topSize - 250;
-    print("topSize ${topSize}");
+    topSize = (Random().nextDouble()) * (gameRef.size.y / 2) + 50;
+    bottomSize = gameRef.size.y - topSize - 200;
+    print("topSize = ${topSize}" + "bottomSize = ${bottomSize}");
   }
 
   void setInitialBarrierPosition() {
     setBarrierSize();
-    topBarrier = Barrier(Vector2(gameRef.size.x - 50, topSize / 2),
+    topBarrier = Barrier(Vector2(gameRef.size.x + 50, topSize / 2),
         Vector2.array([100, topSize]));
     bottomBarrier = Barrier(
-        Vector2(gameRef.size.x - 50, gameRef.size.y - bottomSize / 2),
+        Vector2(gameRef.size.x + 50, gameRef.size.y - bottomSize / 2),
         Vector2.array([100, bottomSize]));
   }
 

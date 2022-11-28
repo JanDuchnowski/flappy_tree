@@ -1,7 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flame_audio/bgm.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flutter/foundation.dart';
 
 class Sounds {
   static Future initialize() async {
@@ -21,7 +19,6 @@ class Sounds {
   static void jumpSound() {
     AudioPlayer player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.release);
-
     player.play(
       AssetSource('audio/tree-jump.wav'),
     );

@@ -59,10 +59,13 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/images/mecha-biom-barrier.png
+    - assets/images/mecha-biom-barrier2.png
     - assets/images/tree.svg
     - assets/images/branding/
     - assets/images/bg/lose-splash.png
     - assets/images/bg/backyard.png
+    - assets/images/bg/bg-example.jpg
     - assets/images/ui/callout.png
     - assets/images/ui/dialog-credits.png
     - assets/images/ui/dialog-help.png

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_application_1/obstacles/barrier.dart';
 import 'package:flutter_application_1/game.dart';
 
@@ -12,18 +13,24 @@ class Obstacles extends PositionComponent
     with HasGameRef<TreeGame>, CollisionCallbacks {
   late Barrier topBarrier;
   late Barrier bottomBarrier;
-  late double topSize;
-  late double bottomSize;
+  final double topSize = 500;
+  final double bottomSize = 500;
+  late double topBarrierPosition;
+  late double bottomBarrierPosition;
 
   Obstacles()
       : super(
           anchor: Anchor.center,
-          //scale: Vector2(1.5, 1.5),
         );
 
   @override
   Future<void> onLoad() async {
-    setInitialBarrierPosition();
+    _setBarrierPosition();
+    topBarrier = Barrier(Vector2(gameRef.size.x - 50, topBarrierPosition),
+        Vector2.array([52, topSize]))
+      ..angle = radians(180);
+    bottomBarrier = Barrier(Vector2(gameRef.size.x - 50, bottomBarrierPosition),
+        Vector2.array([52, bottomSize]));
   }
 
   @override
@@ -38,12 +45,7 @@ class Obstacles extends PositionComponent
     super.update(dt);
     if (GameState().hasGameStarted) {
       if (topBarrier.position.x < -47) {
-        setBarrierSize();
-        topBarrier.size = Vector2.array([
-          100,
-          topSize,
-        ]);
-        bottomBarrier.size = Vector2.array([100, bottomSize]);
+        restartBarrierPosition();
       }
       double relativePostion = gameRef.tree.position.x - topBarrier.position.x;
       if (relativePostion <= 1 && relativePostion >= -1) {
@@ -55,27 +57,17 @@ class Obstacles extends PositionComponent
     }
   }
 
-  void setBarrierSize() {
-    topSize = (Random().nextDouble()) * (gameRef.size.y / 2) + 50;
-    bottomSize = gameRef.size.y - topSize - 200;
-    print("topSize = ${topSize}" + "bottomSize = ${bottomSize}");
-  }
-
-  void setInitialBarrierPosition() {
-    setBarrierSize();
-    topBarrier = Barrier(Vector2(gameRef.size.x + 50, topSize / 2),
-        Vector2.array([100, topSize]));
-    bottomBarrier = Barrier(
-        Vector2(gameRef.size.x + 50, gameRef.size.y - bottomSize / 2),
-        Vector2.array([100, bottomSize]));
-  }
-
   void restartBarrierPosition() {
-    setBarrierSize();
-    topBarrier.position = Vector2(gameRef.size.x - 50, topSize / 2);
-    topBarrier.size = Vector2.array([100, topSize]);
+    _setBarrierPosition();
+    topBarrier.position = Vector2(gameRef.size.x + 50, topBarrierPosition);
+    topBarrier.size = Vector2.array([52, topSize]);
     bottomBarrier.position =
-        Vector2(gameRef.size.x - 50, gameRef.size.y - bottomSize / 2);
-    bottomBarrier.size = Vector2.array([100, bottomSize]);
+        Vector2(gameRef.size.x + 50, bottomBarrierPosition);
+    bottomBarrier.size = Vector2.array([52, bottomSize]);
+  }
+
+  void _setBarrierPosition() {
+    topBarrierPosition = (Random().nextDouble()) * 250;
+    bottomBarrierPosition = topBarrierPosition + 700;
   }
 }

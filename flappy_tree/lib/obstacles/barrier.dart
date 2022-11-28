@@ -25,7 +25,7 @@ class Barrier extends SpriteComponent
     hitbox = RectangleHitbox()..renderShape = false;
     add(hitbox);
 
-    sprite = await gameRef.loadSprite('mecha-biom-barrier2.png');
+    sprite = await gameRef.loadSprite('pipe-green.png');
   }
 
   @override

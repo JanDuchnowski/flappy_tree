@@ -11,7 +11,7 @@ import 'package:flutter_application_1/views/bg_image.dart';
 import 'package:flutter_application_1/views/death_screen.dart';
 import 'package:flutter_application_1/views/menu.dart';
 
-import 'redux/game_state.dart';
+import 'game_state.dart';
 
 class MyGame extends StatelessWidget {
   MyGame();

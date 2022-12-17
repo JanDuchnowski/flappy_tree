@@ -5,7 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/game.dart';
 
-import 'package:flutter_application_1/redux/game_state.dart';
+import 'package:flutter_application_1/game_state.dart';
 
 class Barrier extends SpriteComponent
     with HasGameRef<TreeGame>, CollisionCallbacks {

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/obstacles/barrier.dart';
 import 'package:flutter_application_1/game.dart';
 
-import 'package:flutter_application_1/redux/game_state.dart';
+import 'package:flutter_application_1/game_state.dart';
 
 class Obstacles extends PositionComponent
     with HasGameRef<TreeGame>, CollisionCallbacks {

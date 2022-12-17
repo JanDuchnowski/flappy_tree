@@ -4,7 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter_application_1/game.dart';
-import 'package:flutter_application_1/redux/game_state.dart';
+import 'package:flutter_application_1/game_state.dart';
 import 'package:flutter_application_1/sounds.dart';
 
 enum TreeState {

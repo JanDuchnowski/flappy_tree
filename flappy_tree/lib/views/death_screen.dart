@@ -13,7 +13,7 @@ class DeathView extends SpriteComponent with HasGameRef<TreeGame> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    sprite = await gameRef.loadSprite('bg/lose-splash.png');
+    sprite = await gameRef.loadSprite('bg/bg-example.jpg');
   }
 
   @override

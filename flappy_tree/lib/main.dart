@@ -11,8 +11,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Flame.images.loadAll(<String>[
-    'bg/backyard.png',
-    'bg/lose-splash.png',
     'mecha-biom-barrier.png',
     'mecha-biom-barrier2.png',
     'pipe-green.png'

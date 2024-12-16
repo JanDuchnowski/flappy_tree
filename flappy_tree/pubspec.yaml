@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -30,8 +30,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -39,7 +37,6 @@ dependencies:
   flame_audio: ^2.10.3
   audioplayers: ^6.1.0
   soundpool: ^2.3.0
-
 
 dev_dependencies:
   flutter_test:
@@ -64,25 +61,7 @@ flutter:
     - assets/images/pipe-green.png
     - assets/images/tree.svg
     - assets/images/branding/
-    - assets/images/bg/lose-splash.png
-    - assets/images/bg/backyard.png
     - assets/images/bg/bg-example.jpg
-    - assets/images/ui/callout.png
-    - assets/images/ui/dialog-credits.png
-    - assets/images/ui/dialog-help.png
-    - assets/images/ui/icon-credits.png
-    - assets/images/ui/icon-help.png
-    - assets/images/ui/icon-music-disabled.png
-    - assets/images/ui/icon-music-enabled.png
-    - assets/images/ui/icon-sound-disabled.png
-    - assets/images/ui/icon-sound-enabled.png
-    - assets/images/ui/start-button.png
-    - assets/images/branding/title.png
-    - assets/images/ui/dialog-credits.png
-    - assets/images/ui/dialog-help.png
-    - assets/images/ui/icon-credits.png
-    - assets/images/ui/icon-help.png
-    - assets/images/ui/start-button.png
     - assets/audio/
     - assets/audio/tree-jump.wav
     - assets/audio/start-menu.wav

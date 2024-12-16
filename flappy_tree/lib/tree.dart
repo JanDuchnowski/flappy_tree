@@ -19,6 +19,8 @@ class Tree extends SpriteComponent
   Tree({position, size});
   late ShapeHitbox hitbox;
   late List szyc;
+  bool passedPipe = false; // Add the passedPipe property
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -31,7 +33,6 @@ class Tree extends SpriteComponent
   void jump() {
     if (!GameState().wasHit) {
       Sounds.jumpSound();
-      // position.add(Vector2(0, -30));
       add(MoveByEffect(
         Vector2(0, -30),
         EffectController(duration: 0.2, curve: Curves.decelerate),
@@ -42,8 +43,9 @@ class Tree extends SpriteComponent
   @override
   void update(double dt) {
     super.update(dt);
+
     if (!GameState().wasHit && GameState().hasGameStarted) {
-      position = Vector2(position.x, position.y + 1.0);
+      position = Vector2(position.x, position.y + 1.2);
     }
   }
 }

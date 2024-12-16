@@ -44,11 +44,10 @@ class MyGame extends StatelessWidget {
 }
 
 class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
-  final DeathView deathView = DeathView();
   final BackgroundImage backgroundImage = BackgroundImage();
   late Tree tree;
   late TextComponent scoreText;
-  late Menu menu;
+  // late MainMenu menu;
   late Obstacles obstacles;
 
   bool deathScreenAdded = false;
@@ -67,21 +66,21 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
     add(obstacles);
     scoreText = TextComponent(text: "0", position: Vector2(size.x / 2, 100));
     add(scoreText);
-    menu = Menu();
+    // menu = MainMenu(game: gameStateListeners,);
   }
 
   @override
   void onTap() {
-    if (GameState().wasHit) {
-      _restartGame();
-    }
+    // if (GameState().wasHit) {
+    //   restartGame();
+    // }
     tree.jump();
   }
 
   @override
   void update(double dt) {
-    if (GameState().wasHit && !deathScreenAdded) {
-      add(deathView);
+    if (GameState().wasHit) {
+      overlays.add('GameOver');
       deathScreenAdded = true;
     }
     super.update(dt);
@@ -92,13 +91,9 @@ class TreeGame extends FlameGame with TapDetector, HasCollisionDetection {
     scoreText.text = "${score}";
   }
 
-  void _restartGame() {
+  void restartGame() {
     _resetScore();
     GameState().wasHit = false;
-    if (deathView.isMounted == true) {
-      remove(deathView);
-      deathScreenAdded = false;
-    }
     tree.position = size / 2;
     obstacles.restartBarrierPosition();
   }

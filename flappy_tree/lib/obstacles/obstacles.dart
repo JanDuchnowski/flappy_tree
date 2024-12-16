@@ -26,10 +26,10 @@ class Obstacles extends PositionComponent
   @override
   Future<void> onLoad() async {
     _setBarrierPosition();
-    topBarrier = Barrier(Vector2(gameRef.size.x - 50, topBarrierPosition),
+    topBarrier = Barrier(Vector2(gameRef.size.x, topBarrierPosition),
         Vector2.array([52, topSize]))
       ..angle = radians(180);
-    bottomBarrier = Barrier(Vector2(gameRef.size.x - 50, bottomBarrierPosition),
+    bottomBarrier = Barrier(Vector2(gameRef.size.x, bottomBarrierPosition),
         Vector2.array([52, bottomSize]));
   }
 
@@ -47,10 +47,15 @@ class Obstacles extends PositionComponent
       if (topBarrier.position.x < -47) {
         restartBarrierPosition();
       }
-      double relativePostion = gameRef.tree.position.x - topBarrier.position.x;
-      if (relativePostion <= 1 && relativePostion >= -1) {
-        gameRef.score++;
-        gameRef.scoreText.text = "${gameRef.score}";
+      double relativePosition = gameRef.tree.position.x - topBarrier.position.x;
+      if (relativePosition <= 1 && relativePosition >= -1) {
+        if (!gameRef.tree.passedPipe) {
+          gameRef.score++;
+          gameRef.scoreText.text = "${gameRef.score}";
+          gameRef.tree.passedPipe = true;
+        }
+      } else if (relativePosition < -1) {
+        gameRef.tree.passedPipe = false;
       }
       topBarrier.update(dt);
       bottomBarrier.update(dt);

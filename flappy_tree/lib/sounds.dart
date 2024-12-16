@@ -9,19 +9,17 @@ class Sounds {
   }
 
   static void menuTheme() {
-    FlameAudio.bgm.play('start_menu.wav');
+    // FlameAudio.bgm.play('start_menu.wav');
   }
 
   static void gameplayTheme() {
-    FlameAudio.bgm.play('music-beginning.wav');
+    // FlameAudio.bgm.play('music-beginning.wav');
   }
 
   static void jumpSound() {
     AudioPlayer player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.release);
-    player.play(
-      AssetSource('audio/tree-jump.wav'),
-    );
+    // player.play(AssetSource('audio/tree-jump.wav'));
   }
 
   static void pauseBackgroundSound() {
